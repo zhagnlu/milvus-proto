@@ -231,6 +231,7 @@ service MilvusService {
   rpc RefreshExternalCollection(RefreshExternalCollectionRequest) returns (RefreshExternalCollectionResponse) {}
   rpc GetRefreshExternalCollectionProgress(GetRefreshExternalCollectionProgressRequest) returns (GetRefreshExternalCollectionProgressResponse) {}
   rpc ListRefreshExternalCollectionJobs(ListRefreshExternalCollectionJobsRequest) returns (ListRefreshExternalCollectionJobsResponse) {}
+  rpc SqlQuery(SqlQueryRequest) returns (SqlQueryResults) {}
 }
 
 // Client Telemetry Service
@@ -3051,3 +3052,18 @@ message ListRefreshExternalCollectionJobsResponse {
   common.Status status = 1;
   repeated RefreshExternalCollectionJobInfo jobs = 2;
 }
+
+message SqlQueryRequest {
+  string sql = 1;
+  string db_name = 2;
+  map<string, schema.TemplateValue> params = 3;
+  common.ConsistencyLevel consistency_level = 4;
+  map<string, string> search_params = 5;
+}
+
+message SqlQueryResults {
+  common.Status status = 1;
+  repeated schema.FieldData fields_data = 2;
+  repeated string column_names = 3;
+}
+
